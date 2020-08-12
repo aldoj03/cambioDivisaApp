@@ -1,0 +1,7 @@
+{
+  "name": "monitorDivisas",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
