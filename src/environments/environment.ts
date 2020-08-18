@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  urlApiWordpress:  'https://carloscode.seocontenidos.net/wp-json/monitor/v1'
 };
 
 /*

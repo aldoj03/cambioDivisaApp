@@ -10,6 +10,19 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginModule)
   },
+  {
+    path: 'list-cambios',
+    loadChildren: () => import('./list-cambios/list-cambios.module').then( m => m.ListCambiosPageModule)
+  },
+  {
+    path: 'config',
+    loadChildren: () => import('./config/config.module').then( m => m.ConfigPageModule)
+  },
+  {
+    path: 'set-cambios',
+    loadChildren: () => import('./set-cambios/set-cambios.module').then( m => m.SetCambiosPageModule)
+  },
+
 ];
 
 @NgModule({
