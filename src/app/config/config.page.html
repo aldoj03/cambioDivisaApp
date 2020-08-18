@@ -1,12 +1,34 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>config</ion-title>
-    <ion-buttons slot="start"> 
-      <ion-back-button text="" defaultHref="/"  color="primary" icon="arrow-back-outline"></ion-back-button>
+    <ion-title>Configuración</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/" color="primary" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+
+  <ion-text class="ion-text-left ion-margin-horizontal ion-margin-bottom ion-margin">
+  </ion-text>
+
+      <ion-label >
+        <h1 class="ion-padding-bottom ion-padding-start" >Divisa a mostrar</h1>
+      </ion-label>
+
+    <ion-item>
+      <ion-label>Banco Central de Venezuela</ion-label>
+      <ion-toggle (ionChange)="onChangeRadio()" [(ngModel)]="bcvCheck" ></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Pesos Colombianos</ion-label>
+      <ion-toggle (ionChange)="onChangeRadio()"  [(ngModel)]="pesoCheck" ></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Dolares</ion-label>
+      <ion-toggle (ionChange)="onChangeRadio()" [(ngModel)]="dollarCheck"></ion-toggle>
+    </ion-item>
+
 
 </ion-content>

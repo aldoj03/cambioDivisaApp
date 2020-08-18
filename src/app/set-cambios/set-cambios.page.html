@@ -1,12 +1,34 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>setCambios</ion-title>
+    <ion-title>Nuevo Cambio</ion-title>
     <ion-buttons slot="start">
       <ion-back-button text="" defaultHref="/"  color="primary" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content >
+
+  <ion-text color="primary">
+    <h2 class="ion-padding-bottom ion-padding-start" >Ingresa tu cambio</h2>
+  </ion-text>
+
+  <form [formGroup]="divisasForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="floating">Bolívares<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input required name="Bs" formControlName="BS" type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Pesos<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input required name="COP" formControlName="COP" type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Dolares<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input required name="UDS" formControlName="USD" type="number"></ion-input>
+    </ion-item>
+    <ion-button block color="primary" type="submit" [disabled]="divisasForm.invalid">
+      Guardar
+    </ion-button>
+  </form>
 
 </ion-content>

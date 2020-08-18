@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { PeticionesService } from '../services/peticiones.service';
+import { LoadingController, AlertController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,26 +12,57 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  public loginForm;
+  public loginForm: FormGroup;
 
   constructor(
-    private router: Router
-  ) {
-
+    private peticionesService: PeticionesService,
+    private loader: LoadingController,
+    private alert: AlertController,
+    private storage: Storage,
+    private router: Router,
+    ) {
     this.loginForm = new FormGroup({
-      name: new FormControl(''),
+      username: new FormControl(''),
       password: new FormControl('')
     })
-
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
-  onSubmit(form){
+  async getForm() {
+    const loader = await this.loader.create({
+      message: 'Cargando...',
+    });
+    await loader.present();
 
-    console.log(1);
-    
-    this.router.navigate([''])
+    console.log(this.loginForm.value);
+    this.peticionesService.login(this.loginForm.value).subscribe(async res => {
+      console.log(res);
+
+      if (res['code'] == 1) {
+      
+         await this.storage.set('apiToken', res['data']['apiToken'])
+        
+        this.router.navigate(['/'])
+        
+      } else {
+        const alert = await this.alert.create({
+          message: `Error ${res['message']}`,
+
+        })
+
+        await alert.present()
+      }
+      loader.dismiss()
+    }, async err => {
+      const alert = await this.alert.create({
+        message: 'Error'
+      })
+
+      await alert.present()
+    })
+
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-set-cambios',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SetCambiosPage implements OnInit {
 
+  public divisasForm;
+
   constructor() { }
 
   ngOnInit() {
+    this.divisasForm = new FormGroup({
+      BS: new FormControl(''),
+      COP: new FormControl(''),
+      USD: new FormControl('')
+    })
   }
 
 }

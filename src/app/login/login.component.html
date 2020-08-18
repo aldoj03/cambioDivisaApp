@@ -1,22 +1,21 @@
 <ion-content class="login__content">
 
-    
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <img class="img__login" src="assets/img/logo.jpg" alt="">
-      <ion-item>
-        <ion-label position="floating">E-Mail <ion-text color="danger">*</ion-text>
-        </ion-label>
-        <ion-icon slot="end" name="person-outline"></ion-icon>
-        <ion-input required formControlName="user" type="text"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Password <ion-text color="danger">*</ion-text>
-        </ion-label>
-        <ion-icon slot="end" name="lock-closed-outline"></ion-icon>
-        <ion-input required formControlName="password" type="text"></ion-input>
-      </ion-item>
-      <ion-button class="submit" expand="block" block color="primary" type="submit" [disabled]="loginForm.invalid">
-        Ingresa
-      </ion-button>
-    </form>
-</ion-content>
+
+  
+  <form [formGroup]="loginForm" (ngSubmit)="getForm()">
+    <img class="img__login" src="assets/img/logo.jpg" alt="">
+    <ion-item>
+      <ion-label position="floating">Usuario<ion-text color="danger">*</ion-text></ion-label>
+      <ion-icon slot="end" name="person-outline"></ion-icon>
+      <ion-input required name="username" formControlName="username" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Contraseña<ion-text color="danger">*</ion-text></ion-label>
+      <ion-icon slot="end" name="lock-closed-outline"></ion-icon>
+      <ion-input required name="password" formControlName="password" type="password"></ion-input>
+    </ion-item>
+    <ion-button class="submit" block expand="block" shape="round" color="primary" type="submit" [disabled]="loginForm.invalid">
+      Ingresar
+    </ion-button>
+  </form>
+</ion-content> 
