@@ -9,13 +9,10 @@
 
 <ion-content >
 
-  <ion-text color="primary">
-    <h2 class="ion-padding-bottom ion-padding-start" >Ingresa tu cambio</h2>
-  </ion-text>
 
-  <form [formGroup]="divisasForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="divisasForm" class="ion-margin-top ion-padding-horizontal"   (ngSubmit)="onSubmit()">
     <ion-item>
-      <ion-label position="floating">Bolívares<ion-text color="danger">*</ion-text></ion-label>
+      <ion-label position="floating">BCV<ion-text color="danger">*</ion-text></ion-label>
       <ion-input required name="Bs" formControlName="BS" type="number"></ion-input>
     </ion-item>
     <ion-item>
@@ -26,7 +23,8 @@
       <ion-label position="floating">Dolares<ion-text color="danger">*</ion-text></ion-label>
       <ion-input required name="UDS" formControlName="USD" type="number"></ion-input>
     </ion-item>
-    <ion-button block color="primary" type="submit" [disabled]="divisasForm.invalid">
+    <ion-button class="submit" block expand="block" 
+    shape="round" color="primary" type="submit" [disabled]="divisasForm.invalid">
       Guardar
     </ion-button>
   </form>

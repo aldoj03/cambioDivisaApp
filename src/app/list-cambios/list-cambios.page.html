@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>listCambios</ion-title>
+    <ion-title>Listar cambios</ion-title>
     <ion-buttons slot="start">
       <ion-back-button text="" defaultHref="/" color="primary" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
@@ -8,36 +8,23 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="getList($event)">
+    <ion-refresher-content>
 
-  <ion-list-header>
-    <ion-label>Historial de registros</ion-label>
-  </ion-list-header>
-  <ion-list>
-    <ion-item>
-      <ion-label>Nombre</ion-label>
-      <p>Cambios:20$</p>
-    </ion-item>
-    <ion-item>
-      <ion-label>Nombre</ion-label>
-      <p>Cambios:20$</p>
-    </ion-item>
-    <ion-item>
-      <ion-label>Nombre</ion-label>
-      <p>Cambios:20$</p>
-    </ion-item>
-    <ion-item>
-      <ion-label>Nombre</ion-label>
-      <p>Cambios:20$</p>
-    </ion-item>
-    <ion-item>
-      <ion-label>Nombre</ion-label>
-      <p>Cambios:20$</p>
-    </ion-item>
-    <ion-item>
-      <ion-label>Nombre</ion-label>
-      <p>Cambios:20$</p>
-    </ion-item>
-
-  </ion-list>
+    </ion-refresher-content>
+  </ion-refresher>
+          <ion-list>
+            <ion-item *ngFor="let cambio of cambios">
+              <ion-label>
+                <h1>
+                  {{cambio.username}}
+                </h1>
+                  <h4 class="ion-text-end"><strong>BCV:</strong> {{cambio.bcv}} Bs</h4>
+                  <h4 class="ion-text-end"><strong>Pesos:</strong> {{cambio.peso}} COP</h4>
+                  <h4 class="ion-text-end"><strong>Dolar:</strong> {{cambio.dollar}} USD</h4>
+                <p>{{cambio.dateinfo}}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
 
 </ion-content>

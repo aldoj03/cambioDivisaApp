@@ -26,11 +26,11 @@ export class PeticionesService {
 
     return this.httpClient.post(`${this.apiUrl}/token/validate`, apiToken)
   }
-  getList(user) {
-    return this.httpClient.post(`${this.apiUrl}`, user)
+  getList(apiToken) {
+    return this.httpClient.post(`${this.apiUrl}/api/returnTable`, apiToken)
   }
-  updateCambios(user) {
-    return this.httpClient.post(`${this.apiUrl}`, user)
+  updateCambios(cambios) {
+    return this.httpClient.post(`${this.apiUrl}/api/update`, cambios)
   }
    setConfig(checks) {
     const data =  { ...checks };

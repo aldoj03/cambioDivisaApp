@@ -4,13 +4,11 @@ import { AuthGuardGuard } from './guards/auth-guard.guard';
 
 const routes: Routes = [
   {
-    canActivate: [AuthGuardGuard],
 
     path: '',
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule),
   },
   {
-    canActivate: [AuthGuardGuard],
 
     path: 'list-cambios',
     loadChildren: () => import('./list-cambios/list-cambios.module').then(m => m.ListCambiosPageModule)

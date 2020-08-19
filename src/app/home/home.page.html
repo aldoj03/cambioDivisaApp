@@ -1,23 +1,82 @@
-<!-- <ion-header [translucent]="true">
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Resumen
     </ion-title>
   </ion-toolbar>
-</ion-header> -->
+</ion-header>
 
 <ion-content [fullscreen]="true">
-  <!-- <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header> -->
+  <ion-refresher slot="fixed" (ionRefresh)="getList($event)">
+    <ion-refresher-content>
+
+    </ion-refresher-content>
+  </ion-refresher>
 
   <div class="container">
     <ion-grid fixed>
+      <ion-row >
+        <ion-item-divider class="iont-text-center">
+          <h3>Act: {{cambioActual.dateinfo}}</h3>
+        </ion-item-divider>
+        <ion-col size="12">
+          <ion-item button>
+            <ion-thumbnail slot="start">
+              <img src="assets/img/bandera-usa.jpg">
+            </ion-thumbnail>
+            <ion-label>
+              <h2>Dolar a Bs</h2>
+              <h3>{{cambioActual.dollar | number}} $</h3>
+            </ion-label>
+            <ng-container *ngIf="cambioAnterior">
+              <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.dollar < cambioAnterior.dollar">
+              </ion-icon>
+              <ion-icon name="chevron-down-outline" color="danger" *ngIf="cambioActual.dollar > cambioAnterior.dollar">
+              </ion-icon>
+              <ion-icon name="remove-outline" color="warning" *ngIf="cambioActual.dollar == cambioAnterior.dollar"></ion-icon>
+            </ng-container>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12">
+          <ion-item button>
+            <ion-thumbnail slot="start">
+              <img src="assets/img/bandera-colombia.jpg">
+            </ion-thumbnail>
+            <ion-label>
+              <h2>Pesos a bs</h2>
+              <h3>{{cambioActual.peso | number}} COP</h3>
+            </ion-label>
+            <ng-container *ngIf="cambioAnterior">
+              <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.peso < cambioAnterior.peso">
+              </ion-icon>
+              <ion-icon name="chevron-down-outline" color="danger" *ngIf="cambioActual.peso > cambioAnterior.peso">
+              </ion-icon>
+              <ion-icon name="remove-outline" color="warning" *ngIf="cambioActual.peso == cambioAnterior.peso"></ion-icon>
+            </ng-container>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12">
+          <ion-item button>
+            <ion-thumbnail slot="start">
+              <img src="assets/img/bcv.gif">
+            </ion-thumbnail>
+            <ion-label>
+              <h2 class="ionic-text-center">BCV</h2>
+              <h3>{{cambioActual.bcv}} Bs</h3>
+            </ion-label>
+            <ng-container *ngIf="cambioAnterior">
+              <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.bcv < cambioAnterior.bcv">
+              </ion-icon>
+              <ion-icon name="chevron-down-outline" color="danger" *ngIf="cambioActual.bcv > cambioAnterior.bcv">
+              </ion-icon>
+              <ion-icon name="remove-outline" color="warning" *ngIf="cambioActual.bcv == cambioAnterior.bcv"></ion-icon>
+            </ng-container>
+          </ion-item>
+        </ion-col>
+      </ion-row>
       <ion-row>
         <ion-col size="6">
-          <ion-card  class="cards__icons">
+          <ion-card class="cards__icons">
             <ion-icon class="icon__home" name="cash-outline"></ion-icon>
             <ion-card-subtitle><span>Agregar Divisa</span> </ion-card-subtitle>
           </ion-card>
@@ -29,7 +88,7 @@
           </ion-card>
         </ion-col>
         <ion-col size="6">
-          <ion-card routerLink="list-cambios" class="cards__icons" >
+          <ion-card routerLink="list-cambios" class="cards__icons">
             <ion-icon class="icon__home" name="cash-outline"></ion-icon>
             <ion-card-subtitle><span>Listar Cambios</span> </ion-card-subtitle>
           </ion-card>
