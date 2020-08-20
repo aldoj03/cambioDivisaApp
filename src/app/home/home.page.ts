@@ -55,7 +55,7 @@ export class HomePage implements OnInit {
       .subscribe(apiToken => {
         if (apiToken) {
 
-          this.cambioSubs = this.peticionesService.getList({
+          this.cambioSubs = this.peticionesService.getLastRegistros({
             token: apiToken
           }).subscribe(res => {
             console.log(res);
