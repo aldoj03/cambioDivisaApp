@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
   ) {
     this.cambioActual = {
       bcv :'',
-      ateinfo: '',
+      dateinfo: '',
       dollar: '',
       id: '',
       peso: '',
@@ -30,7 +30,7 @@ export class HomePage implements OnInit {
     }
     this.cambioAnterior = {
       bcv :'',
-      ateinfo: '',
+      dateinfo: '',
       dollar: '',
       id: '',
       peso: '',
@@ -88,7 +88,7 @@ export class HomePage implements OnInit {
 
 interface res  {
   bcv :string;
-  ateinfo: string,
+  dateinfo: string,
   dollar: string,
   id: string,
   peso: string,

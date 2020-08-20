@@ -47,9 +47,9 @@
               <h3>{{cambioActual.peso | number}} COP</h3>
             </ion-label>
             <ng-container *ngIf="cambioAnterior">
-              <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.peso < cambioAnterior.peso">
+              <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.peso > cambioAnterior.peso">
               </ion-icon>
-              <ion-icon name="chevron-down-outline" color="danger" *ngIf="cambioActual.peso > cambioAnterior.peso">
+              <ion-icon name="chevron-down-outline" color="danger" *ngIf="cambioActual.peso < cambioAnterior.peso">
               </ion-icon>
               <ion-icon name="remove-outline" color="warning" *ngIf="cambioActual.peso == cambioAnterior.peso"></ion-icon>
             </ng-container>
@@ -65,9 +65,9 @@
               <h3>{{cambioActual.bcv}} Bs</h3>
             </ion-label>
             <ng-container *ngIf="cambioAnterior">
-              <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.bcv < cambioAnterior.bcv">
+              <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.bcv > cambioAnterior.bcv">
               </ion-icon>
-              <ion-icon name="chevron-down-outline" color="danger" *ngIf="cambioActual.bcv > cambioAnterior.bcv">
+              <ion-icon name="chevron-down-outline" color="danger" *ngIf="cambioActual.bcv < cambioAnterior.bcv">
               </ion-icon>
               <ion-icon name="remove-outline" color="warning" *ngIf="cambioActual.bcv == cambioAnterior.bcv"></ion-icon>
             </ng-container>
