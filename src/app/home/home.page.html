@@ -31,9 +31,9 @@
               <ion-skeleton-text animated style="width: 10%" *ngIf="!cambioActual.dollar"></ion-skeleton-text>
             </ion-label>
             <ng-container *ngIf="cambioAnterior">
-              <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.dollar < cambioAnterior.dollar">
+              <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.dollar > cambioAnterior.dollar">
               </ion-icon>
-              <ion-icon name="chevron-down-outline" color="danger" *ngIf="cambioActual.dollar > cambioAnterior.dollar">
+              <ion-icon name="chevron-down-outline" color="danger" *ngIf="cambioActual.dollar < cambioAnterior.dollar">
               </ion-icon>
               <ion-icon name="remove-outline" color="warning" *ngIf="cambioActual.dollar == cambioAnterior.dollar"></ion-icon>
             </ng-container>

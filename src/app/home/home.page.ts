@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { PeticionesService } from '../services/peticiones.service';
 import { Router } from '@angular/router';
-import {  Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { CambiosService } from '../services/cambios.service';
+import { CompareCambio } from '../interfaces/compare-cambio';
+import { filter, first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -12,17 +15,18 @@ import {  Subscription } from 'rxjs';
 export class HomePage implements OnInit {
 
   public tokenSusb: Subscription;
-  public cambioSubs:Subscription;
-  public cambioActual:res;
-  public cambioAnterior:res;
+  public cambioSubs: Subscription;
+  public cambioActual: CompareCambio;
+  public cambioAnterior: CompareCambio;
 
   constructor(
     private peticionesService: PeticionesService,
     private alert: AlertController,
-    private router: Router
+    private router: Router,
+    private cambiosService: CambiosService
   ) {
     this.cambioActual = {
-      bcv :'',
+      bcv: '',
       dateinfo: '',
       dollar: '',
       id: '',
@@ -30,83 +34,82 @@ export class HomePage implements OnInit {
       username: '',
     }
     this.cambioAnterior = {
-      bcv :'',
+      bcv: '',
       dateinfo: '',
       dollar: '',
       id: '',
       peso: '',
       username: '',
     }
-   }
+  }
 
   ngOnInit() {
+    
+    this.subscribeLocalCambios()
     console.log('init');
     
   }
-  ionViewDidLeave() {
-    this.tokenSusb.unsubscribe();
-    if(this.cambioSubs){
-
-      this.cambioSubs.unsubscribe();
-    }
-  }
   ionViewWillEnter() {
-    this.getList()
+    console.log(this.cambioActual);
     
+  }
+
+
+  subscribeLocalCambios() {
+    this.cambiosService.emitLocalCambio().pipe().subscribe(val => {
+      if(val.bcv){
+
+        console.log('local cambios', val);
+        
+        // this.cambioAnterior = this.cambioActual;
+        this.cambioActual = val
+
+      }else{
+     this.getList(null)
+
+      }
+
+    })
+  }
+
+  async getList(event) {
+
+    this.cambioSubs = (await this.peticionesService.getLastRegistros()).subscribe(res => {
+      if(!res['code']){
+
+        let compareArray = [];
+        if (event) {
+          event.target.complete()
+        }
+        this.cambioActual = res[0];
+        compareArray.push(this.cambioActual)
+        if (res[1]) {
+          this.cambioAnterior = res[1];
+        compareArray.push(this.cambioAnterior)
+
+        } 
+
+        this.cambiosService.setCompareCambio(this.cambioActual)
+      }
+        console.log(res);
+
+    }, async err => {
+      const alert = await this.alert.create({
+        message: 'Error'
+      })
+
+      await alert.present()
+      this.cambioSubs.unsubscribe();
+    })
+
+  }
+
+  ionViewDidLeave() {
+
   }
   ngOnDestroy() {
-    console.log(1);
-    
-    this.tokenSusb.unsubscribe();
-    this.cambioSubs.unsubscribe();
-  }
 
-  getList(event = null) {
-
-
-    this.tokenSusb = this.peticionesService.returnDBToken()
-      .subscribe(apiToken => {
-        console.log(apiToken)
-        if (apiToken) {
-
-          this.cambioSubs = this.peticionesService.getLastRegistros({
-            token: apiToken
-          }).subscribe(res => {
-            console.log(res);
-            if (event) {
-              event.target.complete()
-            }
-            this.cambioActual = res[0];
-            if (res[1]) {
-              this.cambioAnterior = res[1];
-            }else{
-              this.router.navigate(['login'])
-            }
-
-            this.tokenSusb.unsubscribe();
-            this.cambioSubs.unsubscribe();
-          }, async err => {
-            const alert = await this.alert.create({
-              message: 'Error'
-            })
-
-            await alert.present()
-            this.tokenSusb.unsubscribe();
-            this.cambioSubs.unsubscribe();
-          })
-        }else{
-          this.router.navigate(['login'])
-        }
-      })
   }
 
 }
 
-interface res  {
-  bcv :string;
-  dateinfo: string,
-  dollar: string,
-  id: string,
-  peso: string,
-  username: string,
-}

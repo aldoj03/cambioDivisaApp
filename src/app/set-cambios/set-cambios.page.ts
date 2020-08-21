@@ -3,6 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { PeticionesService } from '../services/peticiones.service';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { CambiosService } from '../services/cambios.service';
 
 @Component({
   selector: 'app-set-cambios',
@@ -17,7 +18,7 @@ export class SetCambiosPage implements OnInit {
     private peticionesService: PeticionesService,
     private loader: LoadingController,
     private alert: AlertController,
-    private router: Router,
+    private cambiosSerice: CambiosService
 
   ) { }
 
@@ -27,6 +28,13 @@ export class SetCambiosPage implements OnInit {
       COP: new FormControl(''),
       USD: new FormControl('')
     })
+
+  }
+  getCambiosActuales() {
+    this.cambiosSerice.cambioEmitido.subscribe(val => {
+       console.log(val);
+       
+    })
   }
 
   async onSubmit() {
@@ -35,45 +43,33 @@ export class SetCambiosPage implements OnInit {
     });
     await loader.present();
 
-    this.peticionesService.returnDBToken()
-      .subscribe(apiToken => {
-        if (apiToken) {
-          console.log(this.divisasForm.value);
-
-          const divisas = {
-            peso: String(this.divisasForm.value.COP),
-            dollar: String(this.divisasForm.value.USD),
-            bcv: String(this.divisasForm.value.BS),
-            token: apiToken
-          }
-          console.log(divisas);
-
-          this.peticionesService.updateCambios( divisas ).subscribe(async res => {
-            console.log(res);
-
-            if (!res) {
 
 
-              const alert = await this.alert.create({
-                message: `Error ${res['message']}`,
+    const divisas = {
+      peso: String(this.divisasForm.value.COP),
+      dollar: String(this.divisasForm.value.USD),
+      bcv: String(this.divisasForm.value.BS),
+    }
+    await (await this.peticionesService.updateCambios(divisas)).subscribe(async res => {
+      console.log(res);
+      this.cambiosSerice.setCompareCambio(divisas)
+      if (!res) {
+        const alert = await this.alert.create({
+          message: `Error ${res['message']}`,
 
-              })
+        })
 
-              await alert.present()
+        await alert.present()
 
-            }
-            loader.dismiss()
-          }, async err => {
-            const alert = await this.alert.create({
-              message: 'Error'
-            })
-
-            await alert.present()
-          })
-        } else {
-          this.router.navigate(['login'])
-        }
+      }
+      loader.dismiss()
+    }, async err => {
+      const alert = await this.alert.create({
+        message: 'Error'
       })
+
+      await alert.present()
+    })
   }
 
 }

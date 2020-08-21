@@ -35,20 +35,13 @@ export class ListCambiosPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.tokenSusb.unsubscribe();
     this.cambioSubs.unsubscribe();
   }
 
-  getList(event,loader = null){
+async  getList(event,loader = null){
     
-    
-    this.tokenSusb = this.peticionesService.returnDBToken()
-      .subscribe(apiToken => {
-        if (apiToken) {
 
-          this.cambioSubs = this.peticionesService.getList({
-            token: apiToken
-          }).subscribe(res => {
+          this.cambioSubs =  ( await this.peticionesService.getList()).subscribe(res => {
             console.log(res);
             if(event){
               event.target.complete()
@@ -57,7 +50,6 @@ export class ListCambiosPage implements OnInit, OnDestroy {
             if(loader){
               loader.dismiss()
             }
-            this.tokenSusb.unsubscribe();
             this.cambioSubs.unsubscribe();
           }, async err => {
             const alert = await this.alert.create({
@@ -68,8 +60,7 @@ export class ListCambiosPage implements OnInit, OnDestroy {
             this.tokenSusb.unsubscribe();
             this.cambioSubs.unsubscribe();
           })
-        }
-      })
+      
   }
 
 }

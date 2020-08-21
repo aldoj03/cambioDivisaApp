@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Storage } from '@ionic/storage';
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -27,22 +27,29 @@ export class PeticionesService {
 
     return this.httpClient.post(`${this.apiUrl}/token/validate`, apiToken)
   }
-  configInit(apiToken) {
+  async configInit() {
+    const token = await this.storage.get('apiToken')
 
-    return this.httpClient.post(`${this.apiUrl}/api/configInit`, apiToken)
+    return this.httpClient.post(`${this.apiUrl}/api/configInit`, {token})
   }
-  getList(apiToken) {
-    return this.httpClient.post(`${this.apiUrl}/api/returnRegistro`, apiToken)
+  async getList() {
+    const token = await this.storage.get('apiToken')
+
+    return this.httpClient.post(`${this.apiUrl}/api/returnRegistro`, {token})
   }
-  getLastRegistros(apiToken) {
-    return this.httpClient.post(`${this.apiUrl}/api/campareCambio`, apiToken)
+
+  async getLastRegistros() {
+    const token = await this.storage.get('apiToken')
+    return this.httpClient.post(`${this.apiUrl}/api/campareCambio`, { token })
   }
-  updateCambios(cambios) {
-    return this.httpClient.post(`${this.apiUrl}/api/update`, cambios)
+  async updateCambios(cambios) {
+    const token = await this.storage.get('apiToken')
+    return this.httpClient.post(`${this.apiUrl}/api/update`, { ...cambios, token })
   }
-  setConfig(checks) {
-    const data = { ...checks };
-    console.log(data);
+  async setConfig(checks) {
+    const token = await this.storage.get('apiToken')
+
+    const data = { ...checks, token };
 
     return this.httpClient.post(`${this.apiUrl}/api/setting`, data)
   }

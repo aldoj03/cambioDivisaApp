@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PeticionesService } from '../services/peticiones.service';
 import { LoadingController, AlertController } from '@ionic/angular';
-import {  first } from 'rxjs/operators';
+import { first, filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { CambiosService } from '../services/cambios.service';
 
 @Component({
   selector: 'app-config',
@@ -11,93 +12,120 @@ import { Router } from '@angular/router';
 })
 export class ConfigPage implements OnInit, OnDestroy {
 
-  public bcvCheck;
-  public dollarCheck;
-  public pesoCheck;
-  public token;
   public tokenSub;
-  public checksLoaded;
-
+  public checksDisabled;
+  public isLoaded ;
+  public divisasChecks;
 
   constructor(
     private peticionesService: PeticionesService,
     private loader: LoadingController,
     private alert: AlertController,
     private router: Router,
-  ) { 
-    this.checksLoaded = false
+    private cambiosService: CambiosService
+  ) {
+    this.divisasChecks = {
+
+      bcvCheck: false,
+      dollarCheck: false,
+      pesoCheck: false
+    }
+    this.checksDisabled = {
+      bcvCheck: true,
+      dollarCheck: true,
+      pesoCheck: true
+    }
+  }
+  
+  ngOnInit() {
+    this.isLoaded = false;
+
+    this.getLocalChecks();
+
   }
 
-  ngOnInit() {
-   this.tokenSub = this.peticionesService.returnDBToken()
-      .subscribe(apiToken => {
-        if (apiToken) {
-          this.token = apiToken;
+  getLocalChecks() {
+    
+    this.cambiosService.emitChecksConfig().subscribe(val => {
+      if (val.pesosCheck == "") {
+        this.setupConfig()
+      } else {
+        for (const key in this.checksDisabled) {
+          if (Object.prototype.hasOwnProperty.call(this.checksDisabled, key)) {
+            this.checksDisabled[key] = false;
 
-          this.peticionesService.configInit({token: this.token}).subscribe(val=>{
-            console.log(val);
-            
-            
-            this.pesoCheck =  val[0]['arg_one'] == '1'  ? true : false; 
-            this.dollarCheck =  val[0]['arg_two'] == '1' ? true : false;
-            this.bcvCheck = val[0]['arg_three'] == '1' ? true : false;
-            this.checksLoaded = true
-          })
-          
+          }
+          this.divisasChecks = val
 
-        }else{
-          this.router.navigate(['login'])
         }
       }
-      )
 
-    this.bcvCheck = false;
-    this.dollarCheck = false;
-    this.pesoCheck = false
+    })
   }
 
-  async onChangeRadio() {
+  async setupConfig() {
+    (await this.peticionesService.configInit()).subscribe(val => {
 
-      const loader = await this.loader.create({
-        message: 'Cargando...',
-      });
-      await loader.present();
-  
-  
-      this.peticionesService.setConfig({
-        bcvCheck: this.bcvCheck,
-        dollarCheck: this.dollarCheck,
-        pesoCheck: this.pesoCheck,
-        token: this.token
-      }).pipe(first()).subscribe(async res => {
-        console.log(res);
-  
-        if (!res) {
-  
-          const alert = await this.alert.create({
-            message: `Error ${res['message']}`,
-  
-          })
-  
-          await alert.present()
-  
+      this.divisasChecks.pesoCheck = val[0]['arg_one'] == '1' ? true : false;
+      this.divisasChecks.dollarCheck = val[0]['arg_two'] == '1' ? true : false;
+      this.divisasChecks.bcvCheck = val[0]['arg_three'] == '1' ? true : false;
+
+      this.cambiosService.setChecksConfig(this.divisasChecks)
+      setTimeout(() => {
+
+        this.isLoaded = true
+      
+      }, 200);
+
+      for (const key in this.checksDisabled) {
+        if (Object.prototype.hasOwnProperty.call(this.checksDisabled, key)) {
+          this.checksDisabled[key] = false;
         }
-        loader.dismiss()
-      }, async err => {
-        const alert = await this.alert.create({
-          message: 'Error'
+      }
+    })
+
+  }
+
+  async onChangeRadio(moneda) {
+    if (this.isLoaded) {
+
+      this.checksDisabled[moneda] = true;
+      try {
+
+
+        (await this.peticionesService.setConfig(this.divisasChecks)).subscribe(async res => {
+          this.checksDisabled[moneda] = false;
+          this.peticionesService.setConfig(this.divisasChecks)
+          if (!res) {
+
+            const alert = await this.alert.create({
+              message: `Error ${res['message']}`,
+
+            })
+
+            await alert.present()
+
+          } else {
+            this.cambiosService.setChecksConfig(this.divisasChecks)
+          }
+        }, async err => {
+          const alert = await this.alert.create({
+            message: 'Error'
+          })
+
+          await alert.present()
         })
-  
-        await alert.present()
-      })
-    
+      } catch (error) {
+        throw error
+      }
+    }
+
   }
 
 
 
-  ngOnDestroy(){
-    this.tokenSub.unsubscribe()
+  ngOnDestroy() {
   }
-  
+
 
 }
