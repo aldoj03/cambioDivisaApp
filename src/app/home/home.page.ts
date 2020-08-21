@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { PeticionesService } from '../services/peticiones.service';
 import { Router } from '@angular/router';
+import {  Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -10,8 +11,8 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
 
-  public tokenSusb;
-  public cambioSubs;
+  public tokenSusb: Subscription;
+  public cambioSubs:Subscription;
   public cambioActual:res;
   public cambioAnterior:res;
 
@@ -39,11 +40,23 @@ export class HomePage implements OnInit {
    }
 
   ngOnInit() {
-    this.getList()
+    console.log('init');
+    
   }
+  ionViewDidLeave() {
+    this.tokenSusb.unsubscribe();
+    if(this.cambioSubs){
 
-
+      this.cambioSubs.unsubscribe();
+    }
+  }
+  ionViewWillEnter() {
+    this.getList()
+    
+  }
   ngOnDestroy() {
+    console.log(1);
+    
     this.tokenSusb.unsubscribe();
     this.cambioSubs.unsubscribe();
   }
@@ -53,6 +66,7 @@ export class HomePage implements OnInit {
 
     this.tokenSusb = this.peticionesService.returnDBToken()
       .subscribe(apiToken => {
+        console.log(apiToken)
         if (apiToken) {
 
           this.cambioSubs = this.peticionesService.getLastRegistros({
@@ -65,6 +79,8 @@ export class HomePage implements OnInit {
             this.cambioActual = res[0];
             if (res[1]) {
               this.cambioAnterior = res[1];
+            }else{
+              this.router.navigate(['login'])
             }
 
             this.tokenSusb.unsubscribe();

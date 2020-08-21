@@ -31,37 +31,45 @@ export class LoginComponent implements OnInit {
   }
 
   async getForm() {
-    const loader = await this.loader.create({
-      message: 'Cargando...',
-    });
-    await loader.present();
-
-    console.log(this.loginForm.value);
-    this.peticionesService.login(this.loginForm.value).subscribe(async res => {
-      console.log(res);
-
-      if (res['code'] == 1) {
+    try {
       
-         await this.storage.set('apiToken', res['data']['apiToken'])
+      const loader = await this.loader.create({
+        message: 'Cargando...',
+      });
+      await loader.present();
+  
+      console.log(this.loginForm.value);
+      this.peticionesService.login(this.loginForm.value).subscribe(async res => {
+        console.log(res);
+  
+        if (res['code'] == 1) {
         
-        this.router.navigate(['/'])
-        
-      } else {
+           this.storage.set('apiToken', res['data']['apiToken']).then((tokenSaved)=>{
+
+             console.log(tokenSaved);
+              this.router.navigate(['/'])
+           })
+          
+          
+        } else {
+          const alert = await this.alert.create({
+            message: `Error ${res['message']}`,
+  
+          })
+  
+          await alert.present()
+        }
+        loader.dismiss()
+      }, async err => {
         const alert = await this.alert.create({
-          message: `Error ${res['message']}`,
-
+          message: 'Error'
         })
-
+  
         await alert.present()
-      }
-      loader.dismiss()
-    }, async err => {
-      const alert = await this.alert.create({
-        message: 'Error'
       })
-
-      await alert.present()
-    })
+    } catch (error) {
+      throw error
+    }
 
   }
 

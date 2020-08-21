@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PeticionesService } from '../services/peticiones.service';
 import { LoadingController, AlertController } from '@ionic/angular';
-import { switchMap } from 'rxjs/operators';
+import {  first } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,28 +16,32 @@ export class ConfigPage implements OnInit, OnDestroy {
   public pesoCheck;
   public token;
   public tokenSub;
+  public checksLoaded;
 
 
   constructor(
     private peticionesService: PeticionesService,
     private loader: LoadingController,
     private alert: AlertController,
-    private router: Router
-  ) { }
+    private router: Router,
+  ) { 
+    this.checksLoaded = false
+  }
 
   ngOnInit() {
-
    this.tokenSub = this.peticionesService.returnDBToken()
       .subscribe(apiToken => {
         if (apiToken) {
           this.token = apiToken;
 
           this.peticionesService.configInit({token: this.token}).subscribe(val=>{
+            console.log(val);
             
-            this.pesoCheck =  val[0]['arg_one'] == '1' ? true : false; 
-            this.dollarCheck =  val[0]['arg_one'] == '1' ? true : false;
+            
+            this.pesoCheck =  val[0]['arg_one'] == '1'  ? true : false; 
+            this.dollarCheck =  val[0]['arg_two'] == '1' ? true : false;
             this.bcvCheck = val[0]['arg_three'] == '1' ? true : false;
-            
+            this.checksLoaded = true
           })
           
 
@@ -54,40 +58,39 @@ export class ConfigPage implements OnInit, OnDestroy {
 
   async onChangeRadio() {
 
-    const loader = await this.loader.create({
-      message: 'Cargando...',
-    });
-    await loader.present();
-
-
-    this.peticionesService.setConfig({
-      bcvCheck: this.bcvCheck,
-      dollarCheck: this.dollarCheck,
-      pesoCheck: this.pesoCheck,
-      token: this.token
-    }).subscribe(async res => {
-      console.log(res);
-      console.log(res);
-
-      if (!res) {
-
-
+      const loader = await this.loader.create({
+        message: 'Cargando...',
+      });
+      await loader.present();
+  
+  
+      this.peticionesService.setConfig({
+        bcvCheck: this.bcvCheck,
+        dollarCheck: this.dollarCheck,
+        pesoCheck: this.pesoCheck,
+        token: this.token
+      }).pipe(first()).subscribe(async res => {
+        console.log(res);
+  
+        if (!res) {
+  
+          const alert = await this.alert.create({
+            message: `Error ${res['message']}`,
+  
+          })
+  
+          await alert.present()
+  
+        }
+        loader.dismiss()
+      }, async err => {
         const alert = await this.alert.create({
-          message: `Error ${res['message']}`,
-
+          message: 'Error'
         })
-
+  
         await alert.present()
-
-      }
-      loader.dismiss()
-    }, async err => {
-      const alert = await this.alert.create({
-        message: 'Error'
       })
-
-      await alert.present()
-    })
+    
   }
 
 

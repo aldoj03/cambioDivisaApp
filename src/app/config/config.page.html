@@ -19,15 +19,15 @@
 
     <ion-item>
       <ion-label>Banco Central de Venezuela</ion-label>
-      <ion-toggle (ionChange)="onChangeRadio()" [(ngModel)]="bcvCheck" ></ion-toggle>
+      <ion-toggle [disabled]="!checksLoaded" (click)="onChangeRadio()" [(ngModel)]="bcvCheck" ></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>Pesos Colombianos</ion-label>
-      <ion-toggle (ionChange)="onChangeRadio()"  [(ngModel)]="pesoCheck" ></ion-toggle>
+      <ion-toggle [disabled]="!checksLoaded" (click)="onChangeRadio()"  [(ngModel)]="pesoCheck" ></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>Dolares</ion-label>
-      <ion-toggle (ionChange)="onChangeRadio()" [(ngModel)]="dollarCheck"></ion-toggle>
+      <ion-toggle [disabled]="!checksLoaded" (click)="onChangeRadio()" [(ngModel)]="dollarCheck"></ion-toggle>
     </ion-item>
 
 

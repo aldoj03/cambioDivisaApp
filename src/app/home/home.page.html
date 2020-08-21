@@ -16,17 +16,19 @@
   <div class="container">
     <ion-grid fixed>
       <ion-row >
-        <ion-item-divider class="iont-text-center">
-          <h3>Act: {{cambioActual.dateinfo}}</h3>
+        <ion-item-divider >
+          <h3 *ngIf="cambioActual.dateinfo">Act: {{cambioActual.dateinfo}}</h3>
+          <ion-skeleton-text animated style="width: 40%" *ngIf="!cambioActual.dateinfo"></ion-skeleton-text>
         </ion-item-divider>
         <ion-col size="12">
-          <ion-item class="item__divisa" button>
+          <ion-item class="item__divisa" >
             <ion-thumbnail slot="start">
               <img src="assets/img/bandera-usa.jpg">
             </ion-thumbnail>
             <ion-label>
               <h2>Dolar a Bs</h2>
-              <h3>{{cambioActual.dollar | number}} $</h3>
+              <h3 *ngIf="cambioActual.dollar">{{cambioActual.dollar | number}} $</h3>
+              <ion-skeleton-text animated style="width: 10%" *ngIf="!cambioActual.dollar"></ion-skeleton-text>
             </ion-label>
             <ng-container *ngIf="cambioAnterior">
               <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.dollar < cambioAnterior.dollar">
@@ -38,13 +40,14 @@
           </ion-item>
         </ion-col>
         <ion-col size="12">
-          <ion-item class="item__divisa" button>
+          <ion-item class="item__divisa" >
             <ion-thumbnail slot="start">
               <img src="assets/img/bandera-colombia.jpg">
             </ion-thumbnail>
             <ion-label>
               <h2>Pesos a bs</h2>
-              <h3>{{cambioActual.peso | number}} COP</h3>
+              <h3 *ngIf="cambioActual.peso">{{cambioActual.peso | number}} COP</h3>
+              <ion-skeleton-text animated style="width: 10%" *ngIf="!cambioActual.peso"></ion-skeleton-text>
             </ion-label>
             <ng-container *ngIf="cambioAnterior">
               <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.peso > cambioAnterior.peso">
@@ -56,13 +59,14 @@
           </ion-item>
         </ion-col>
         <ion-col size="12">
-          <ion-item class="item__divisa" button>
+          <ion-item class="item__divisa" >
             <ion-thumbnail slot="start">
               <img src="assets/img/bcv.gif">
             </ion-thumbnail>
             <ion-label>
               <h2 class="ionic-text-center">BCV</h2>
-              <h3>{{cambioActual.bcv}} Bs</h3>
+              <h3 *ngIf="cambioActual.bcv">{{cambioActual.bcv}} Bs</h3>
+              <ion-skeleton-text animated style="width: 10%" *ngIf="!cambioActual.bcv"></ion-skeleton-text>
             </ion-label>
             <ng-container *ngIf="cambioAnterior">
               <ion-icon name="chevron-up-outline" color="success" *ngIf="cambioActual.bcv > cambioAnterior.bcv">
