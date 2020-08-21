@@ -56,6 +56,11 @@ export class ConfigPage implements OnInit, OnDestroy {
 
           }
           this.divisasChecks = val
+          setTimeout(() => {
+
+            this.isLoaded = true
+          
+          }, 200);
 
         }
       }

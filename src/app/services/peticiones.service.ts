@@ -21,7 +21,7 @@ export class PeticionesService {
 
 
   login(user) {
-    return this.httpClient.post(`${this.apiUrl}/token`, user)
+    return this.httpClient.post(`${this.apiUrl}/login`, user)
   }
   validateToken(apiToken) {
 
@@ -44,7 +44,7 @@ export class PeticionesService {
   }
   async updateCambios(cambios) {
     const token = await this.storage.get('apiToken')
-    return this.httpClient.post(`${this.apiUrl}/api/update`, { ...cambios, token })
+    return this.httpClient.post(`${this.apiUrl}/api/changes`, { ...cambios, token })
   }
   async setConfig(checks) {
     const token = await this.storage.get('apiToken')
