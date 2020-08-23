@@ -40,11 +40,11 @@ export class PeticionesService {
 
   async getLastRegistros() {
     const token = await this.storage.get('apiToken')
-    return this.httpClient.post(`${this.apiUrl}/api/campareCambio`, { token })
+    return this.httpClient.post(`${this.apiUrl}/api/changes`, { token })
   }
   async updateCambios(cambios) {
     const token = await this.storage.get('apiToken')
-    return this.httpClient.post(`${this.apiUrl}/api/changes`, { ...cambios, token })
+    return this.httpClient.post(`${this.apiUrl}/api/update`, { ...cambios, token })
   }
   async setConfig(checks) {
     const token = await this.storage.get('apiToken')

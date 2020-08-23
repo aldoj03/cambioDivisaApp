@@ -25,32 +25,19 @@ export class HomePage implements OnInit {
     private router: Router,
     private cambiosService: CambiosService
   ) {
-    this.cambioActual = {
-      bcv: '',
-      dateinfo: '',
-      dollar: '',
-      id: '',
-      peso: '',
-      username: '',
-    }
-    this.cambioAnterior = {
-      bcv: '',
-      dateinfo: '',
-      dollar: '',
-      id: '',
-      peso: '',
-      username: '',
-    }
+    this.defaultCambios()
   }
 
   ngOnInit() {
     
-    this.subscribeLocalCambios()
+    // this.subscribeLocalCambios()
     console.log('init');
     
   }
   ionViewWillEnter() {
-    console.log(this.cambioActual);
+    this.defaultCambios()
+
+    this.getList(null)
     
   }
 
@@ -110,6 +97,23 @@ export class HomePage implements OnInit {
   ngOnDestroy() {
 
   }
-
+  defaultCambios(){
+    this.cambioActual = {
+      bcv: '',
+      dateinfo: '',
+      dollar: '',
+      id: '',
+      peso: '',
+      username: '',
+    }
+    this.cambioAnterior = {
+      bcv: '',
+      dateinfo: '',
+      dollar: '',
+      id: '',
+      peso: '',
+      username: '',
+    }
+  }
 }
 

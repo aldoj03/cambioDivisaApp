@@ -14,13 +14,11 @@ const routes: Routes = [
     loadChildren: () => import('./list-cambios/list-cambios.module').then(m => m.ListCambiosPageModule)
   },
   {
-    canActivate: [AuthGuardGuard],
 
     path: 'config',
     loadChildren: () => import('./config/config.module').then(m => m.ConfigPageModule)
   },
   {
-    canActivate: [AuthGuardGuard],
 
     path: 'set-cambios',
     loadChildren: () => import('./set-cambios/set-cambios.module').then(m => m.SetCambiosPageModule)
