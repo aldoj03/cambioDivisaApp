@@ -50,14 +50,14 @@ export class PeticionesService {
     if (!token) {
       this.router.navigate(['login'])
     }
-    return this.httpClient.post(`${this.apiUrl}/api/campareCambio`, { token })
+    return this.httpClient.post(`${this.apiUrl}/api/changes`, { token })
   }
   async updateCambios(cambios) {
     const token = await this.storage.get('apiToken')
     if (!token) {
       this.router.navigate(['login'])
     }
-    return this.httpClient.post(`${this.apiUrl}/api/changes`, { ...cambios, token })
+    return this.httpClient.post(`${this.apiUrl}/api/update`, { ...cambios, token })
   }
   async setConfig(checks) {
     const token = await this.storage.get('apiToken')

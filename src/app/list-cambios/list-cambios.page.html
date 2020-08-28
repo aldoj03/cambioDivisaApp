@@ -13,18 +13,20 @@
 
     </ion-refresher-content>
   </ion-refresher>
-          <ion-list>
-            <ion-item *ngFor="let cambio of cambios">
-              <ion-label>
-                <h1>
-                  {{cambio.username}}
-                </h1>
-                  <h4 class="ion-text-end"><strong>BCV:</strong> {{cambio.bcv}} Bs</h4>
-                  <h4 class="ion-text-end"><strong>Pesos:</strong> {{cambio.peso}} COP</h4>
-                  <h4 class="ion-text-end"><strong>Dolar:</strong> {{cambio.dollar}} USD</h4>
-                <p>{{cambio.dateinfo}}</p>
-              </ion-label>
-            </ion-item>
-          </ion-list>
+
+  <ion-virtual-scroll [items]="cambios" approxItemHeight="130px">
+    <ion-item *virtualItem="let cambio; let itemBounds = bounds;">
+      <ion-label>
+        <h1>
+          {{cambio.username}}
+        </h1>
+          <h4 class="ion-text-end"><strong>BCV:</strong> {{cambio.bcv}} Bs</h4>
+          <h4 class="ion-text-end"><strong>Pesos:</strong> {{cambio.peso}} COP</h4>
+          <h4 class="ion-text-end"><strong>Dolar:</strong> {{cambio.dollar}} USD</h4>
+        <p>{{cambio.dateinfo}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-virtual-scroll>
+
 
 </ion-content>

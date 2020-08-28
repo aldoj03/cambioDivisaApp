@@ -13,11 +13,11 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <div class="container">
+  <div class="container ion-margin-top">
     <ion-grid fixed>
       <ion-row >
         <ion-item-divider >
-          <h3 *ngIf="cambioActual.dateinfo">Act: {{cambioActual.dateinfo}}</h3>
+          <h3 class="ion-margin-horizontal" *ngIf="cambioActual.dateinfo">Act: {{cambioActual.dateinfo}}</h3>
           <ion-skeleton-text animated style="width: 40%" *ngIf="!cambioActual.dateinfo"></ion-skeleton-text>
         </ion-item-divider>
         <ion-col size="12">
@@ -78,26 +78,20 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col size="6">
-          <ion-card class="cards__icons">
-            <ion-icon class="icon__home" name="cash-outline"></ion-icon>
-            <ion-card-subtitle><span>Agregar Divisa</span> </ion-card-subtitle>
-          </ion-card>
-        </ion-col>
-        <ion-col size="6">
+      <ion-row class="ion-margin-top">
+        <ion-col size="4">
           <ion-card routerLink="set-cambios" class="cards__icons">
             <ion-icon class="icon__home" name="cash-outline"></ion-icon>
             <ion-card-subtitle><span>Establecer cambios</span> </ion-card-subtitle>
           </ion-card>
         </ion-col>
-        <ion-col size="6">
+        <ion-col size="4">
           <ion-card routerLink="list-cambios" class="cards__icons">
             <ion-icon class="icon__home" name="cash-outline"></ion-icon>
             <ion-card-subtitle><span>Listar Cambios</span> </ion-card-subtitle>
           </ion-card>
         </ion-col>
-        <ion-col size="6">
+        <ion-col size="4">
           <ion-card routerLink="config" class="cards__icons">
             <ion-icon class="icon__home" name="cash-outline"></ion-icon>
             <ion-card-subtitle><span>Configuración</span> </ion-card-subtitle>
